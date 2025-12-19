@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  stretch: one
+  recommended: false
+  completed_count: 1
+  last_completed_at: 2025-03-30 16:38:56
+
+two:
+  user: two
+  stretch: two
+  recommended: false
+  completed_count: 1
+  last_completed_at: 2025-03-30 16:38:56
