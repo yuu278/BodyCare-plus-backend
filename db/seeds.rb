@@ -277,51 +277,52 @@ stretches = [
   }
 ]
 
+CLOUDINARY_VIDEOS = {
+  chest: "2025-10-28_00_42_17_video_jzit1q",
+  neck: "2025-10-28_00_30_41_video_b3fsxr",
+  shoulder_blade: "2025-10-28_00_36_22_video_slapzv",
+  forearm: "2025-10-28_00_58_15_video_q7ik5h",
+  shoulder: "2025-10-28_00_51_50_video_loyr0m",
+  inner_shoulder: "2025-10-28_00_02_14_video_e6bnaw",
+  back: "2025-10-28_01_05_08_video_oejebn",
+  side: "2025-10-28_01_27_26_video_zbvcdj",
+  waist_back: "2025-10-28_01_09_10_video_gsn4gq",
+  abdomen: "2025-10-28_01_14_59_video_zfbdjv",
+  waist: "2025-10-28_01_34_27_video_fp7ffd",
+  hip: "2025-10-28_00_13_57_video_wt5myx",
+  deep_hip: "2025-10-29_00_28_05_video_hxtich",
+  hip_joint: "2025-10-29_00_31_51_video_ryptu4",
+  inner_thigh: "2025-10-29_00_46_31_video_ivxa6h",
+  tensor_fasciae_latae: "2025-10-29_00_40_18_video_fbgkph",
+  psoas: "2025-10-28_00_23_59_video_qksrjm",
+  hamstring: "2025-11-05_17_23_36_video_b4f9ab",
+  knee: "2025-10-29_00_57_50_video_euckni",
+  calf: "2025-11-05_17_28_28_video_yfzblv",
+  ankle: "2025-10-29_22_25_43_video_aacskg",
+  sole: "2025-10-29_22_25_25_video_g3olqh"
+}.freeze
+
+cloud_name = "dgxa8u9od"
+
+# ループはここから
 stretches.each do |stretch|
-  invalid_pain   = stretch[:pain_type] - Stretch::PAIN_TYPES
-  invalid_dur    = stretch[:duration] - Stretch::DURATIONS
-  invalid_job    = stretch[:job_type] - Stretch::JOB_TYPES
-  invalid_ex     = stretch[:exercise_habit] - Stretch::EXERCISE_HABITS
-  invalid_post   = stretch[:posture_habit] - Stretch::POSTURE_HABITS
+  invalid_pain = stretch[:pain_type] - Stretch::PAIN_TYPES
+  invalid_dur = stretch[:duration] - Stretch::DURATIONS
+  invalid_job = stretch[:job_type] - Stretch::JOB_TYPES
+  invalid_ex = stretch[:exercise_habit] - Stretch::EXERCISE_HABITS
+  invalid_post = stretch[:posture_habit] - Stretch::POSTURE_HABITS
 
   if [invalid_pain, invalid_dur, invalid_job, invalid_ex, invalid_post].any?(&:present?)
     raise "❌ seeds.rb のデータに不正値があります: #{stretch[:name]}"
   end
 
-  CLOUDINARY_VIDEOS = {
-    chest: "2025-10-28_00_42_17_video_jzit1q",
-    neck: "2025-10-28_00_30_41_video_b3fsxr",
-    shoulder_blade: "2025-10-28_00_36_22_video_slapzv",
-    forearm: "2025-10-28_00_58_15_video_q7ik5h",
-    shoulder: "2025-10-28_00_51_50_video_loyr0m",
-    inner_shoulder: "2025-10-28_00_02_14_video_e6bnaw",
-    back: "2025-10-28_01_05_08_video_oejebn",
-    side: "2025-10-28_01_27_26_video_zbvcdj",
-    waist_back: "2025-10-28_01_09_10_video_gsn4gq",
-    abdomen: "2025-10-28_01_14_59_video_zfbdjv",
-    waist: "2025-10-28_01_34_27_video_fp7ffd",
-    hip: "2025-10-28_00_13_57_video_wt5myx",
-    deep_hip: "2025-10-29_00_28_05_video_hxtich",
-    hip_joint: "2025-10-29_00_31_51_video_ryptu4",
-    inner_thigh: "2025-10-29_00_46_31_video_ivxa6h",
-    tensor_fasciae_latae: "2025-10-29_00_40_18_video_fbgkph",
-    psoas: "2025-10-28_00_23_59_video_qksrjm",
-    hamstring: "2025-11-05_17_23_36_video_b4f9ab",
-    knee: "2025-10-29_00_57_50_video_euckni",
-    calf: "2025-11-05_17_28_28_video_yfzblv",
-    ankle: "2025-10-29_22_25_43_video_aacskg",
-    sole: "2025-10-29_22_25_25_video_g3olqh"
-  }.freeze
-
-  cloud_name = "dgxa8u9od"
+  # ループの中でCloudinary URLを取得
   public_id = CLOUDINARY_VIDEOS[stretch[:target_area].to_sym]
-
-  video_url =
-    if public_id.present?
-      "https://res.cloudinary.com/#{cloud_name}/video/upload/#{public_id}.mp4"
-    else
-      nil
-    end
+  video_url = if public_id.present?
+    "https://res.cloudinary.com/#{cloud_name}/video/upload/#{public_id}.mp4"
+  else
+    nil
+  end
 
   s = Stretch.find_or_initialize_by(name: stretch[:name])
   s.update!(
